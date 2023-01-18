@@ -1,6 +1,6 @@
 import HTMLElementViewModel from "./core/HTMLElementViewModel.js";
-import { ApiResponse, Message } from "./types/index.js";
-import { clientFetcher } from "./utils/api.js";
+import { Message } from "./types/index.js";
+import fetcher from "./utils/api.js";
 
 window.customElements.define(
   "hny-store",
@@ -21,12 +21,11 @@ window.customElements.define(
           getMessagesAll: async () => {
             this.$data.loading = true;
 
-            const result: ApiResponse<{ posts: Message[] }> =
-              await clientFetcher("/posts", {
-                method: "GET",
-              });
+            const response = await fetcher("/posts", {
+              method: "GET",
+            });
 
-            this.$data.messages = result.data.posts;
+            this.$data.messages = response.data.data.posts;
 
             this.$data.loading = false;
           },

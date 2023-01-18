@@ -70,7 +70,7 @@ window.customElements.define(
         },
         mounted: async () => {
           store.$watcher.messages.push((_, messages) => {
-            messages.forEach((message: Message) => {
+            messages.reverse().forEach((message: Message) => {
               const messageItem = new MessageItemModel({
                 ...message,
               });
