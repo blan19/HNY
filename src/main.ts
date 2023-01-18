@@ -5,15 +5,14 @@ import NotFound from "./page/404";
 import Router from "./utils/Router";
 import HTMLElementViewModel from "./core/HTMLElementViewModel";
 
-const html = /* html */ `
-<main>
-  <h1>Hello World..!</h1>
-</main>
+import "./components/Header";
 
+const html = /* html */ `
 <style scoped>
-:host {
-  display: block;
-}
+  :host {
+    display: block;
+    position: relative;
+  }
 </style>
 `;
 
