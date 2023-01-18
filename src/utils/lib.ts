@@ -40,4 +40,8 @@ const el = (
   return element.querySelector(selector);
 };
 
-export { el, getErrorMessage };
+const isDeepEqual = <T, K>(target: T, value: K) => {
+  return JSON.stringify(target) === JSON.stringify(value);
+};
+
+export { el, getErrorMessage, isDeepEqual };
