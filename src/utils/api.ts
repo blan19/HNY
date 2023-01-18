@@ -25,8 +25,15 @@ const fetcher = (url: string, options: FetcherRequestInit) => {
 };
 
 const clientFetcher = async (url: string, options: FetcherRequestInit) => {
+  const headers = {
+    ...options.headers,
+    "Access-Control-Allow-Origin": "*",
+  };
   try {
-    const response = await fetcher(url, options);
+    const response = await fetcher(url, {
+      ...options,
+      headers,
+    });
 
     if (!response.ok)
       throw new HNYApiError(response.status, `${url} Api Error`);
@@ -47,6 +54,7 @@ const clientApi = async (url: string, options: FetcherRequestInit) => {
     const response = await fetcher(url, {
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
         ...headers,
       },
       body: requestBody,
