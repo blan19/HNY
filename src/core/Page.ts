@@ -16,8 +16,13 @@ const Page = class extends Component {
   }
 
   setup(): void {
+    this.$target.innerHTML = "";
+    const Header = document.createElement("hny-header");
+    const Main = document.createElement("main");
+    this.$target.appendChild(Header);
+    this.$target.appendChild(Main);
     const Component = this.#component;
-    new Component({ target: this.$target });
+    new Component({ target: Main });
   }
 };
 
