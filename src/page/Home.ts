@@ -21,7 +21,7 @@ const html = /* html */ `
 <ul m-ref="messages"></ul>
 
 <style scoped>
-  @import url("./src/styles/component.css");
+  @import url("/styles/component.css");
 
   :host {
     display: flex;

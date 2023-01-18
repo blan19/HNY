@@ -12,7 +12,7 @@ const html = /* html */ `
   </li>
 
   <style scoped>
-    @import url("./src/styles/component.css");
+    @import url("/styles/component.css");
 
     li {
       display: flex;
