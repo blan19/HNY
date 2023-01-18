@@ -98,8 +98,6 @@ const HomePage = class extends Page {
   }
 
   setup(): void {
-    console.log(this.$target);
-
     const createPage = document.createElement("hny-home-page");
     this.$target.appendChild(createPage);
   }

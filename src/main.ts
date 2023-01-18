@@ -8,37 +8,6 @@ import store from "./store";
 import "./components/Header";
 import HTMLElementViewModel from "./core/HTMLElementViewModel";
 
-// const App = class {
-//   constructor() {
-//     store.$methods.getMessagesAll();
-
-//     new Router({
-//       routes: [
-//         {
-//           path: "/",
-//           component: HomePage,
-//         },
-//         {
-//           path: "/posting/:id",
-//           component: PostingPage,
-//         },
-//         {
-//           path: "/create",
-//           component: CreatePage,
-//         },
-//         {
-//           path: "/*",
-//           component: NotFound,
-//         },
-//       ],
-//     });
-//   }
-// };
-
-// window.onload = () => {
-//   new App();
-// };
-
 const html = /* html */ `
 <div id="hny-app"></div>
 <style scoped>
