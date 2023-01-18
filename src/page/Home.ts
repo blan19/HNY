@@ -4,6 +4,8 @@ import store from "../store";
 import Router from "../utils/Router";
 
 import "../components/MessageItem";
+import { Message } from "../types";
+import MessageItemModel from "../model/MessageItemModel";
 
 const html = /* html */ `
 <button @click="clickBtn">
@@ -16,9 +18,11 @@ const html = /* html */ `
     새 글 작성하기
   </h1>
 </button>
-<section m-ref="messages"></section>
+<ul m-ref="messages"></ul>
 
 <style scoped>
+  @import url("./src/styles/component.css");
+
   :host {
     display: flex;
     flex-direction: column;
@@ -44,9 +48,8 @@ const html = /* html */ `
   h1 {
     color: var(--grayscale-1);
     font-size: var(--font-20);
-    margin: 0;
   }
-  section {
+  ul {
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -65,8 +68,18 @@ window.customElements.define(
             Router.push("/create");
           },
         },
-        mounted: () => {
-          store.$methods.getMessagesAll();
+        mounted: async () => {
+          store.$watcher.messages.push((_, messages) => {
+            messages.forEach((message: Message) => {
+              const messageItem = new MessageItemModel({
+                ...message,
+              });
+
+              this.$ref.messages.appendChild(messageItem.generateElement());
+            });
+          });
+
+          await store.$methods.getMessagesAll();
         },
       });
     }
