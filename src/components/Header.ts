@@ -17,10 +17,9 @@ const html = /* html */ `
   :host {
     width: 100%;
     position: fixed;
-    justify
     top: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
   header {
     width: 100%;
