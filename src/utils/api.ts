@@ -1,17 +1,25 @@
+import axios, { RawAxiosRequestConfig } from "axios";
 import { HNYApiError } from "./errorMessage";
 import { getErrorMessage } from "./lib";
 
-interface FetcherRequestInit extends RequestInit {
+interface FetcherRequestInit extends RawAxiosRequestConfig<unknown> {
   params?: number | string;
   query?: {
     [key: string]: any;
   };
-  data?: unknown;
 }
 
 enum Api {
   baseUrl = "http://43.201.103.199",
 }
+
+const instance = axios.create({
+  baseURL: Api["baseUrl"],
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json",
+  },
+});
 
 const fetcher = (url: string, options: FetcherRequestInit) => {
   const { params, query, ...rest } = options;
@@ -19,54 +27,37 @@ const fetcher = (url: string, options: FetcherRequestInit) => {
   if (params) url += `/${params}`;
   if (query) url += `?${new URLSearchParams(query)}`;
 
-  const response = fetch(`${Api["baseUrl"]}${url}`, rest);
+  const response = instance(`${Api["baseUrl"]}${url}`, rest);
 
   return response;
 };
 
 const clientFetcher = async (url: string, options: FetcherRequestInit) => {
-  const headers = {
-    ...options.headers,
-    "Access-Control-Allow-Origin": "*",
-  };
   try {
-    const response = await fetcher(url, {
-      ...options,
-      headers,
-    });
+    const response = await fetcher(url, options);
 
-    if (!response.ok)
+    if (response.status !== 200)
       throw new HNYApiError(response.status, `${url} Api Error`);
 
-    const result = await response.json();
-
-    return result;
+    return response.data;
   } catch (error) {
     throw new Error(getErrorMessage(error));
   }
 };
 
 const clientApi = async (url: string, options: FetcherRequestInit) => {
-  const { data, headers, ...rest } = options;
-  const requestBody = JSON.stringify(data);
+  const { data, ...rest } = options;
 
   try {
     const response = await fetcher(url, {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        ...headers,
-      },
-      body: requestBody,
       ...rest,
+      data,
     });
 
-    if (!response.ok)
+    if (response.status !== 200)
       throw new HNYApiError(response.status, `${url} Api Error`);
 
-    const result = await response.json();
-
-    return result;
+    return response.data;
   } catch (e) {
     throw new Error(getErrorMessage(e));
   }
