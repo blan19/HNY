@@ -35,7 +35,7 @@ const HTMLElementViewModel = class<
     mounted?: Function;
   }) {
     super();
-    this.$root = this.attachShadow({ mode: "closed" });
+    this.$root = this.attachShadow({ mode: "open" });
     this.$root.innerHTML = __html;
 
     this.isMounted = false;
