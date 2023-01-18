@@ -9,12 +9,8 @@ interface FetcherRequestInit extends RawAxiosRequestConfig<unknown> {
   };
 }
 
-enum Api {
-  baseUrl = "http://43.201.103.199",
-}
-
 const instance = axios.create({
-  baseURL: Api["baseUrl"],
+  baseURL: process.env.VITE_BASE_URL,
   headers: {
     "Content-Security-Policy": "upgrade-insecure-requests",
     "Access-Control-Allow-Origin": "*",
@@ -28,7 +24,7 @@ const fetcher = (url: string, options: FetcherRequestInit) => {
   if (params) url += `/${params}`;
   if (query) url += `?${new URLSearchParams(query)}`;
 
-  const response = instance(`${Api["baseUrl"]}${url}`, rest);
+  const response = instance(`${url}`, rest);
 
   return response;
 };
@@ -64,4 +60,4 @@ const clientApi = async (url: string, options: FetcherRequestInit) => {
   }
 };
 
-export { Api, clientApi, clientFetcher };
+export { clientApi, clientFetcher };
