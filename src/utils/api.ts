@@ -16,6 +16,7 @@ enum Api {
 const instance = axios.create({
   baseURL: Api["baseUrl"],
   headers: {
+    "Content-Security-Policy": "upgrade-insecure-requests",
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",
   },
