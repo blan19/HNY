@@ -6,16 +6,18 @@ window.customElements.define(
   "hny-store",
   class extends HTMLElementViewModel<{
     loading: boolean;
-    messages: Message[];
-    comments: Comment[];
+    messages: Message[] | null;
+    message: Message | null;
+    comments: Comment[] | null;
   }> {
     constructor() {
       super({
         html: "",
         data: {
           loading: false,
-          messages: [],
-          comments: [],
+          messages: null,
+          message: null,
+          comments: null,
         },
         methods: {
           getMessagesAll: async () => {
@@ -28,6 +30,22 @@ window.customElements.define(
             this.$data.messages = response.data.data.posts.reverse();
 
             this.$data.loading = false;
+          },
+          getMessageById: async (id: string) => {
+            this.$data.loading = true;
+
+            const response = await fetcher(`/post/${id}`, { method: "GET" });
+
+            if (!response.data.success) {
+              this.$data.message = null;
+              this.$data.comments = null;
+              return;
+            }
+
+            const { comments, post } = response.data.data;
+
+            this.$data.comments = comments;
+            this.$data.message = post;
           },
         },
       });
