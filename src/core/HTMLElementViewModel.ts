@@ -30,7 +30,9 @@ const HTMLElementViewModel = class<
     html: string;
     data?: T;
     methods?: { [key: string]: Function };
-    watch?: Record<keyof T, ((oldValue: any, newValue: any) => void)[]>;
+    watch?: Partial<
+      Record<keyof T, ((oldValue: any, newValue: any) => void)[]>
+    >;
     created?: Function;
     mounted?: Function;
   }) {
