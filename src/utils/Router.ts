@@ -1,7 +1,6 @@
 import Page from "../core/Page";
 import NotFound from "../page/404";
 import ErrorMessage from "./errorMessage";
-import { el } from "./lib";
 
 interface Route {
   path: string;
