@@ -1,13 +1,16 @@
 import HTMLElementViewModel from "../core/HTMLElementViewModel";
 import Page, { PageProps } from "../core/Page";
 
+import "../components/CreateForm";
+
 const html = /* html */ `
-<h1>
-  Create Page
-</h1>
+<hny-create-form></hny-create-form>
 
 <style scoped>
-  :host {}
+  :host {
+    display: block;
+    height: 100%;
+  }
 </style>
 `;
 
