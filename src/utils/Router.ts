@@ -41,7 +41,8 @@ const Router = class {
   }
 
   #routing(): void {
-    const root = el("hny-app");
+    const root = document.querySelector("#hny-app");
+
     const notFound =
       this.#routes.find((route) => route.path === "/*")?.component || NotFound;
 
@@ -92,6 +93,10 @@ const Router = class {
 
   #bind() {
     window.addEventListener("CHANGE_ROUTE", () => {
+      this.#routing();
+    });
+
+    window.addEventListener("popstate", () => {
       this.#routing();
     });
   }
