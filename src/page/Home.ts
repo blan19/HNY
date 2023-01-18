@@ -70,7 +70,7 @@ window.customElements.define(
         },
         mounted: async () => {
           store.$watcher.messages.push((_, messages) => {
-            messages.reverse().forEach((message: Message) => {
+            messages.forEach((message: Message) => {
               const messageItem = new MessageItemModel({
                 ...message,
               });
@@ -79,7 +79,13 @@ window.customElements.define(
             });
           });
 
-          await store.$methods.getMessagesAll();
+          store.$data.messages.forEach((message: Message) => {
+            const messageItem = new MessageItemModel({
+              ...message,
+            });
+
+            this.$ref.messages.appendChild(messageItem.generateElement());
+          });
         },
       });
     }
@@ -92,6 +98,8 @@ const HomePage = class extends Page {
   }
 
   setup(): void {
+    console.log(this.$target);
+
     const createPage = document.createElement("hny-home-page");
     this.$target.appendChild(createPage);
   }

@@ -15,43 +15,12 @@
 }
 
 html,
-body {
+body,
+hny-app {
   height: 100%;
-}
-
-#hny-app {
-  position: relative;
-  padding: 0 16px;
-  margin: 0 auto;
-  font-family: "Pretendard";
-  height: 100%;
-}
-
-main {
-  height: calc(100% - 83px);
-  padding-top: 83px;
 }
 
 a {
   all: unset;
   cursor: pointer;
-}
-
-@media (min-width: 1201px) {
-  #hny-app,
-  hny-header {
-    width: 1200px;
-  }
-}
-@media (min-width: 768px) and (max-width: 1200px) {
-  #hny-app,
-  hny-header {
-    width: 768px;
-  }
-}
-@media (max-width: 767px) {
-  #hny-app,
-  hny-header {
-    width: 360px;
-  }
 }

@@ -1,7 +1,8 @@
 import HTMLElementViewModel from "../core/HTMLElementViewModel";
+import Router from "../utils/Router";
 
 const html = /* html */ `
-  <li m-attr-post-id="postId">
+  <li m-attr-post-id="postId" @click="clickItem">
     <div>
       <img m-prop-src="image">
     </div>
@@ -74,6 +75,16 @@ export default window.customElements.define(
           title: "",
           content: "",
           image: "",
+        },
+        methods: {
+          clickItem: ({ target }: { target: HTMLElement }) => {
+            const li = target.closest("li");
+            const postId = li?.getAttribute("postid");
+
+            if (!postId) return;
+
+            Router.push(`/posting/${postId}`);
+          },
         },
       });
     }

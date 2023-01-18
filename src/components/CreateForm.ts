@@ -65,6 +65,7 @@ const html = /* html */ `
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 12px;
     }
     label {
       display: flex;
@@ -140,8 +141,6 @@ export default window.customElements.define(
             this.$data.content = target.value;
           },
           uploadImage: async () => {
-            if (this.$data.image !== null) return;
-
             await axios({
               method: "GET",
               headers: {

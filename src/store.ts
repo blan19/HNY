@@ -25,7 +25,7 @@ window.customElements.define(
               method: "GET",
             });
 
-            this.$data.messages = response.data.data.posts;
+            this.$data.messages = response.data.data.posts.reverse();
 
             this.$data.loading = false;
           },

@@ -40,7 +40,9 @@ const Router = class {
   }
 
   #routing(): void {
-    const root = document.querySelector("#hny-app");
+    const root = document
+      .querySelector("hny-app")
+      ?.shadowRoot?.querySelector("#hny-app");
 
     const notFound =
       this.#routes.find((route) => route.path === "/*")?.component || NotFound;
