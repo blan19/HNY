@@ -6,15 +6,4 @@ enum ErrorMessage {
   isApiError = "",
 }
 
-const HNYApiError = class extends Error {
-  status: number;
-  constructor(status: number, message: string) {
-    super();
-    this.status = status;
-    this.message = message;
-    this.name = "HNY-Api-Error";
-  }
-};
-
-export { HNYApiError };
 export default ErrorMessage;
