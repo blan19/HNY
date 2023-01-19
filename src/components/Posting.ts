@@ -117,7 +117,11 @@ export default window.customElements.define(
                 alert(errorMessage);
               });
           },
-          editPosting: () => {},
+          editPosting: () => {
+            if (!this.$data.postId) return;
+
+            Router.push(`/edit/${this.$data.postId}`);
+          },
         },
       });
     }

@@ -15,33 +15,35 @@ const html = /* html */ `
 `;
 
 window.customElements.define(
-  "hny-create-page",
+  "hny-edit-page",
   class extends HTMLElementViewModel<{
+    postId: string;
     type: string;
   }> {
     constructor() {
       super({
         html,
         data: {
+          postId: "",
           type: "",
         },
         mounted: () => {
-          this.$data.type = "create";
+          this.$data.type = "edit";
         },
       });
     }
   }
 );
 
-const CreatePage = class extends Page {
+const EditPage = class extends Page {
   constructor({ target, component }: PageProps) {
     super({ target, component });
   }
 
   setup(): void {
-    const createPage = document.createElement("hny-create-page");
-    this.$target.appendChild(createPage);
+    const editPage = document.createElement("hny-edit-page");
+    this.$target.appendChild(editPage);
   }
 };
 
-export default CreatePage;
+export default EditPage;

@@ -7,6 +7,7 @@ import store from "./store";
 
 import "./components/Header";
 import HTMLElementViewModel from "./core/HTMLElementViewModel";
+import EditPage from "./page/Edit";
 
 const html = /* html */ `
 <div id="hny-app"></div>
@@ -60,6 +61,10 @@ export default window.customElements.define(
               {
                 path: "/posting/:id",
                 component: PostingPage,
+              },
+              {
+                path: "/edit/:id",
+                component: EditPage,
               },
               {
                 path: "/create",

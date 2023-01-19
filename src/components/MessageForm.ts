@@ -5,7 +5,7 @@ import fetcher from "../utils/api";
 import Router from "../utils/Router";
 
 const html = /* html */ `
-  <form>
+  <form m-ref="form">
     <section @click="uploadImage" m-ref="thumbnail">
       <div>
         <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,7 +23,7 @@ const html = /* html */ `
       <h1>내용</h1>
       <textarea @input="changeContentValue" id="content" placeholder="글 내용을 입력해주세요." spellcheck="false" m-prop-value="content"></textarea>
     </label>
-    <button type="submit" @click="submit">등록하기</button>
+    <button type="submit" @click="submit"></button>
   </form>
 
   <style scoped>
@@ -119,11 +119,13 @@ const html = /* html */ `
 `;
 
 export default window.customElements.define(
-  "hny-create-form",
+  "hny-message-form",
   class extends HTMLElementViewModel<{
     title: string;
     content: string;
     image: string | null;
+    postId: null | string;
+    type: string;
   }> {
     constructor() {
       super({
@@ -132,6 +134,8 @@ export default window.customElements.define(
           title: "",
           content: "",
           image: null,
+          postId: null,
+          type: "",
         },
         methods: {
           changeTitleValue: ({ target }: { target: HTMLInputElement }) => {
@@ -174,23 +178,31 @@ export default window.customElements.define(
               image: this.$data.image,
             };
 
-            await fetcher("/post", { method: "POST", data })
-              .then((response) => {
-                const message = response.data.post;
-                store.$data.messages.push(message);
-                Router.push("/");
-              })
-              .catch((error: AxiosError<{ code: number; message: string }>) => {
-                const errorMessage =
-                  error.response?.data.message ??
-                  "신년 메세지 등록에 실패했습니다.";
+            if (this.$data.type === "create")
+              await fetcher("/post", { method: "POST", data })
+                .then(async () => {
+                  await store.$methods.getMessagesAll();
+                  Router.push("/");
+                })
+                .catch(
+                  (error: AxiosError<{ code: number; message: string }>) => {
+                    const errorMessage =
+                      error.response?.data.message ??
+                      "신년 메세지 등록에 실패했습니다.";
 
-                alert(errorMessage);
-              });
+                    alert(errorMessage);
+                  }
+                );
           },
         },
         mounted: () => {
           this.$ref.thumbnail.setAttribute("data-thumbnail", "false");
+          const button = this.$ref.form.querySelector("button");
+
+          if (!(button && this.$data.type)) return;
+
+          if (this.$data.type === "create") button.innerText = "등록하기";
+          else button.innerText = "수정하기";
         },
         watch: {
           image: [
