@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+
 interface Message {
   postId: string;
   title: string;
@@ -18,4 +20,6 @@ interface ApiResponse<T> {
   data: T;
 }
 
-export type { Message, Comment, ApiResponse };
+type ApiError = AxiosError<{ code: number; message: string }>;
+
+export type { Message, Comment, ApiResponse, ApiError };

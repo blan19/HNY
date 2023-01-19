@@ -1,4 +1,5 @@
 import axios, { RawAxiosRequestConfig } from "axios";
+import { ApiError } from "../types";
 
 interface FetcherRequestInit extends RawAxiosRequestConfig<unknown> {
   params?: number | string;
@@ -27,4 +28,11 @@ const fetcher = (url: string, options: FetcherRequestInit) => {
   return response;
 };
 
+const errorHandler = (message: string, error: ApiError) => {
+  const errorMessage = error.response?.data.message ?? message;
+
+  alert(errorMessage);
+};
+
+export { errorHandler };
 export default fetcher;

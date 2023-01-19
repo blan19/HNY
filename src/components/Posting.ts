@@ -1,8 +1,7 @@
-import { AxiosError } from "axios";
 import HTMLElementViewModel from "../core/HTMLElementViewModel";
 import store from "../store";
-import { Message } from "../types";
-import fetcher from "../utils/api";
+import { ApiError, Message } from "../types";
+import fetcher, { errorHandler } from "../utils/api";
 import Router from "../utils/Router";
 
 const html = /* html */ `
@@ -109,13 +108,9 @@ export default window.customElements.define(
                 await store.$methods.getMessagesAll();
                 Router.push("/");
               })
-              .catch((error: AxiosError<{ code: number; message: string }>) => {
-                const errorMessage =
-                  error.response?.data.message ??
-                  "신년 메세지 삭제에 실패했습니다.";
-
-                alert(errorMessage);
-              });
+              .catch((error: ApiError) =>
+                errorHandler("신년 메세지 삭제에 실패했습니다.", error)
+              );
           },
           editPosting: () => {
             if (!this.$data.postId) return;

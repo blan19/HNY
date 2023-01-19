@@ -1,8 +1,7 @@
-import { AxiosError } from "axios";
 import HTMLElementViewModel from "../core/HTMLElementViewModel";
 import store from "../store";
-import { Comment } from "../types";
-import fetcher from "../utils/api";
+import { ApiError, Comment } from "../types";
+import fetcher, { errorHandler } from "../utils/api";
 
 const html = /* html */ `
   <li m-attr-comment-id="commentId" m-attr-post-id="postId">
@@ -64,12 +63,9 @@ export default window.customElements.define(
               .then(() => {
                 store.$methods.getMessageById(postId);
               })
-              .catch((error: AxiosError<{ code: number; message: string }>) => {
-                const errorMessage =
-                  error.response?.data.message ?? "댓글 등록에 실패했습니다.";
-
-                alert(errorMessage);
-              });
+              .catch((error: ApiError) =>
+                errorHandler("댓글 등록에 실패했습니다.", error)
+              );
           },
         },
       });

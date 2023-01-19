@@ -1,7 +1,8 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import HTMLElementViewModel from "../core/HTMLElementViewModel";
 import store from "../store";
-import fetcher from "../utils/api";
+import { ApiError } from "../types";
+import fetcher, { errorHandler } from "../utils/api";
 import Router from "../utils/Router";
 
 const html = /* html */ `
@@ -165,7 +166,8 @@ export default window.customElements.define(
           submit: async (e: SubmitEvent) => {
             e.preventDefault();
 
-            const isRequired = Object.values(this.$data).every((v) => v);
+            const isRequired =
+              this.$data.content && this.$data.title && this.$data.image;
 
             if (!isRequired) {
               alert("모두 입력해주세요.");
@@ -184,14 +186,8 @@ export default window.customElements.define(
                   await store.$methods.getMessagesAll();
                   Router.push("/");
                 })
-                .catch(
-                  (error: AxiosError<{ code: number; message: string }>) => {
-                    const errorMessage =
-                      error.response?.data.message ??
-                      "신년 메세지 등록에 실패했습니다.";
-
-                    alert(errorMessage);
-                  }
+                .catch((error: ApiError) =>
+                  errorHandler("신년 메세지 등록에 실패했습니다.", error)
                 );
               return;
             }
@@ -206,13 +202,9 @@ export default window.customElements.define(
                 await store.$methods.getMessagesAll();
                 Router.push("/");
               })
-              .catch((error: AxiosError<{ code: number; message: string }>) => {
-                const errorMessage =
-                  error.response?.data.message ??
-                  "신년 메세지 수정에 실패했습니다.";
-
-                alert(errorMessage);
-              });
+              .catch((error: ApiError) =>
+                errorHandler("신년 메세지 수정에 실패했습니다.", error)
+              );
           },
         },
         mounted: () => {
