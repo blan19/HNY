@@ -6,18 +6,18 @@ window.customElements.define(
   "hny-store",
   class extends HTMLElementViewModel<{
     loading: boolean;
-    messages: Message[] | null;
+    messages: Message[];
     message: Message | null;
-    comments: Comment[] | null;
+    comments: Comment[];
   }> {
     constructor() {
       super({
         html: "",
         data: {
           loading: false,
-          messages: null,
+          messages: [],
           message: null,
-          comments: null,
+          comments: [],
         },
         methods: {
           getMessagesAll: async () => {
@@ -38,7 +38,7 @@ window.customElements.define(
 
             if (!response.data.success) {
               this.$data.message = null;
-              this.$data.comments = null;
+              this.$data.comments = [];
               return;
             }
 

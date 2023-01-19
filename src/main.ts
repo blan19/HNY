@@ -20,7 +20,6 @@ const html = /* html */ `
   }
   #hny-app {
     position: relative;
-    padding: 0 16px;
     margin: 0 auto;
     font-family: "Pretendard";
     height: 100%;

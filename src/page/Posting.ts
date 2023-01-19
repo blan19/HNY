@@ -1,7 +1,7 @@
 import Page, { PageProps } from "../core/Page";
 import HTMLElementViewModel from "../core/HTMLElementViewModel";
 import store from "../store";
-import { Comment } from "../types";
+import { Comment, Message } from "../types";
 import CommentModel from "../model/CommentModel";
 
 import "../components/Posting";
@@ -9,7 +9,15 @@ import "../components/Comment";
 import "../components/CommentForm";
 
 const html = /* html */ `
-<hny-posting></hny-posting>
+<hny-posting 
+m-ref="posting"
+m-bidata-title="title" 
+m-bidata-content="content"
+m-bidata-image="image"
+m-bidata-post-id="postId"
+m-bidata-created-at="createdAt"
+m-bidata-updated-at="updatedAt"
+></hny-posting>
 <ul m-ref="comments"></ul>
 <hny-comment-form></hny-comment-form>
 
@@ -33,15 +41,36 @@ const html = /* html */ `
 
 window.customElements.define(
   "hny-posting-page",
-  class extends HTMLElementViewModel<{}> {
+  class extends HTMLElementViewModel<Message> {
     constructor() {
       super({
         html,
-        data: {},
+        data: {
+          title: "",
+          content: "",
+          createdAt: "",
+          updatedAt: "",
+          postId: "",
+          image: "",
+        },
         mounted: () => {
           const [, , postId] = window.location.pathname.split("/");
 
-          store.$watcher.message.push((_, newValue) => {});
+          store.$watcher.message.push((_, newValue) => {
+            if (!Object.values(newValue).every((v) => v)) {
+              return;
+            }
+
+            const { title, content, createdAt, updatedAt, postId, image } =
+              newValue;
+
+            this.$data.title = title;
+            this.$data.content = content;
+            this.$data.image = image;
+            this.$data.postId = postId;
+            this.$data.createdAt = createdAt;
+            this.$data.updatedAt = updatedAt;
+          });
 
           store.$watcher.comments.push((_, comments) => {
             this.$ref.comments.innerHTML = "";
