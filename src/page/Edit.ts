@@ -2,9 +2,17 @@ import HTMLElementViewModel from "../core/HTMLElementViewModel";
 import Page, { PageProps } from "../core/Page";
 
 import "../components/MessageForm";
+import store from "../store";
 
 const html = /* html */ `
-<hny-message-form m-bidata-type="type"></hny-message-form>
+<hny-message-form 
+m-bidata-type="type"
+m-bidata-image="image"
+m-bidata-title="title"
+m-bidata-content="content"
+m-bidata-post-id="postId"
+>
+</hny-message-form>
 
 <style scoped>
   :host {
@@ -19,6 +27,9 @@ window.customElements.define(
   class extends HTMLElementViewModel<{
     postId: string;
     type: string;
+    image: string;
+    content: string;
+    title: string;
   }> {
     constructor() {
       super({
@@ -26,9 +37,22 @@ window.customElements.define(
         data: {
           postId: "",
           type: "",
+          image: "",
+          content: "",
+          title: "",
         },
         mounted: () => {
           this.$data.type = "edit";
+
+          const [, , postId] = window.location.pathname.split("/");
+          const message = store.$data.message;
+
+          if (!(postId && message)) return;
+
+          this.$data.postId = postId;
+          this.$data.image = message.image;
+          this.$data.title = message.title;
+          this.$data.content = message.content;
         },
       });
     }

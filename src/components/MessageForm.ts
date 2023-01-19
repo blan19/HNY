@@ -178,7 +178,7 @@ export default window.customElements.define(
               image: this.$data.image,
             };
 
-            if (this.$data.type === "create")
+            if (this.$data.type === "create") {
               await fetcher("/post", { method: "POST", data })
                 .then(async () => {
                   await store.$methods.getMessagesAll();
@@ -193,13 +193,36 @@ export default window.customElements.define(
                     alert(errorMessage);
                   }
                 );
+              return;
+            }
+
+            if (!this.$data.postId) return;
+
+            await fetcher(`/post/${this.$data.postId}`, {
+              method: "PATCH",
+              data,
+            })
+              .then(async () => {
+                await store.$methods.getMessagesAll();
+                Router.push("/");
+              })
+              .catch((error: AxiosError<{ code: number; message: string }>) => {
+                const errorMessage =
+                  error.response?.data.message ??
+                  "신년 메세지 수정에 실패했습니다.";
+
+                alert(errorMessage);
+              });
           },
         },
         mounted: () => {
-          this.$ref.thumbnail.setAttribute("data-thumbnail", "false");
           const button = this.$ref.form.querySelector("button");
 
           if (!(button && this.$data.type)) return;
+
+          if (this.$data.image)
+            this.$ref.thumbnail.setAttribute("data-thumbnail", "true");
+          else this.$ref.thumbnail.setAttribute("data-thumbnail", "false");
 
           if (this.$data.type === "create") button.innerText = "등록하기";
           else button.innerText = "수정하기";
