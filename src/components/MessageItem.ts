@@ -22,6 +22,7 @@ const html = /* html */ `
       background: var(--grayscale-1);
       border: 1.5px solid var(--grayscale-3);
       border-radius: 12px;
+      cursor: pointer;
     }
     div {
       display: flex;
