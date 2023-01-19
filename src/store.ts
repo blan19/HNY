@@ -46,6 +46,8 @@ window.customElements.define(
 
             this.$data.comments = comments;
             this.$data.message = post;
+
+            this.$data.loading = false;
           },
         },
       });

@@ -24,6 +24,7 @@ const html = /* html */ `
   @import url("/styles/component.css");
 
   :host {
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 32px;
@@ -49,10 +50,20 @@ const html = /* html */ `
     color: var(--grayscale-1);
     font-size: var(--font-20);
   }
+  h2 {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--grayscale-6);
+    font-size: var(--font-24);
+  }
   ul {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
+    padding-bottom: 16px;
   }
 </style>
 `;
@@ -70,6 +81,13 @@ window.customElements.define(
         },
         mounted: async () => {
           store.$watcher.messages.push((_, messages) => {
+            if (messages.length < 1) {
+              const h2 = document.createElement("h2");
+              h2.innerText = "신년 메세지를 작성해보세요!";
+              this.$ref.messages.appendChild(h2);
+              return;
+            }
+
             messages.forEach((message: Message) => {
               const messageItem = new MessageItemModel({
                 ...message,
