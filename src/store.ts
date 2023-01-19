@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import HTMLElementViewModel from "./core/HTMLElementViewModel.js";
 import { Message } from "./types/index.js";
 import fetcher from "./utils/api.js";
@@ -44,8 +45,12 @@ window.customElements.define(
 
             const { comments, post } = response.data.data;
 
+            this.$data.message = {
+              ...post,
+              createdAt: dayjs(post.createdAt).format("YYYY-MM-DD HH:mm"),
+              updatedAt: dayjs(post.updated).format("YYYY-MM-DD HH:mm"),
+            };
             this.$data.comments = comments;
-            this.$data.message = post;
 
             this.$data.loading = false;
           },
